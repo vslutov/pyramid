@@ -1,0 +1,29 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "project"
+    }
+  ],
+  "settings": {
+    "dascript.compiler": "D:/playtest/eden/win64/../win64/console-eden-dev.exe",
+    "dascript.project.file": "./plugin.das_project",
+    "dascript.server.args": [
+      "${file}",
+      "-main",
+      "main",
+      "--port",
+      "${port}",
+      "-hide_window",
+      "-quiet",
+      "-config:video/threadedWindow:b=no",
+      "--base-path",
+      "${workspaceFolder}",
+      "--base-path",
+      "D:/playtest/eden/win64/../"
+    ],
+    "dascript.project.scanWorkspace": true,
+    "dascript.hovers.verbose": true,
+    "dascript.server.connectTimeout": 6
+  }
+}

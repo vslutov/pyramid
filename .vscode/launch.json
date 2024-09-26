@@ -1,0 +1,55 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "cppvsdbg",
+            "request": "launch",
+            "name": "Run editor",
+            "program": "win64/eden-dev.exe",
+            "args": [
+                "${workspaceFolder}/main.das",
+                "-config:debug/openAsEditor:b=yes",
+            ],
+            "cwd": "D:/playtest/eden/win64/.."
+        },
+        {
+            "type": "cppvsdbg",
+            "request": "launch",
+            "name": "Run game",
+            "program": "win64/eden-dev.exe",
+            "args": [
+                "${workspaceFolder}/main.das",
+                "-config:debug/openAsEditor:b=no",
+            ],
+            "cwd": "D:/playtest/eden/win64/.."
+        },
+        {
+            "type": "cppvsdbg",
+            "request": "launch",
+            "name": "1. Run game with debug mode",
+            "program": "win64/eden-dev.exe",
+            "args": [
+                "${workspaceFolder}/main.das",
+                "-config:debug/openAsEditor:b=no",
+                "--das-wait-debugger",
+                "--das-debug-port 10000"
+            ],
+            "cwd": "D:/playtest/eden/win64/.."
+        },
+        {
+            "type": "dascript",
+            "request": "attach",
+            "name": "2. Attach das debugger",
+            "port": 10000,
+            "paths": [
+                "${workspaceFolder}"
+            ],
+            "pathAliases": {
+                "%file": "${workspaceFolder}",
+            }
+        },
+    ]
+}

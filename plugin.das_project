@@ -1,0 +1,68 @@
+options indenting = 4
+require strings
+require DagorFiles
+// require daslib/strings_boost
+
+var
+    DAS_PAK_ROOT = "./"
+
+def file_exists(path : string) : bool
+    var stat : DagorStat
+    return df_stat(path, stat) == 0
+
+let remap <- {{
+        "%engine" => "engine";
+        "%privateScripts" => "private"
+    }}
+
+def split_by_chars ( text, delim : string implicit ) : array<string>
+    var res : array<string>
+    builtin_string_split_by_char (text, delim) <| $ ( arr : array<string># ) : void
+        res := arr
+    return <- res
+
+def join(it; separator:string implicit)
+    static_if !typeinfo(is_iterable it)
+        concept_assert(false,"can't join non-iterable type")
+        return ""
+    else
+        let st = build_string() <| $ (var writer)
+            var skip_first = true
+            for elem in it
+                if skip_first
+                    skip_first = false
+                else
+                    write(writer, separator)
+                if typeinfo(is_string it)
+                    write_char(writer, elem)
+                else
+                    write(writer, elem)
+        return st
+
+
+[export]
+def module_get(req,from:string) : tuple<string;string;string>
+    var rs <- req |> split_by_chars("./")
+    return [[ auto req, "{join(rs,"/")}.das", "" ]] if length(rs) == 0
+
+    let modName = rs[length(rs)-1]
+
+    if rs[0] == "%file"
+        if length(rs) == 1
+            return [[auto modName, "%file.das", ""]]
+        rs |> erase(0)
+
+    let absPath = "{DAS_PAK_ROOT}{join(rs,"/")}.das"
+    if file_exists(absPath)
+        return [[auto modName, absPath, ""]]
+
+    var fr <- split_by_chars(from,"\\/")
+    while length(fr) > 0
+        pop(fr)
+        let fromPath = "{join(fr, "/")}/{join(rs,"/")}.das"
+        if file_exists(fromPath)
+            return [[auto modName, fromPath, ""]]
+
+    rs[0] = rs[0] == "daslib" ? "{get_das_root()}/daslib" : remap?[rs[0]] ?? rs[0]
+    return [[auto modName, "{join(rs,"/")}.das", ""]]
+
