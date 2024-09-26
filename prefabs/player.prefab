@@ -1,0 +1,50 @@
+node{
+id:i=1
+name:t="Player"
+guid:i64=6502530194074900619
+RigidBody{
+enabled:b=yes
+mass:r=75
+linearDamping:r=0.05
+angularDamping:r=0.05
+friction:r=-1
+restitution:r=-1
+useGravity:b=yes
+isSensor:b=no
+motionType:i=2
+collisionDetection:i=1
+allowedDofs:i=7
+collisionLayer:i=0
+velocity:p3=0, 0, 0
+angularVelocity:p3=0, 0, 0
+isSleeping:b=no
+maxVelocity:r=500
+maxAngularVelocity:r=47.124
+interpolation:i=2
+}
+CapsuleCollider{
+radius:r=0.3
+height:r=1.7
+direction:i=1
+}
+}
+node{
+id:i=2
+name:t="FPS Camera"
+guid:i64=4330330463228142374
+parent:i=1
+pos:p3=0, 0.7, 0
+Camera{
+znear:r=0.01
+zfar:r=100
+fov:r=1.53938
+fovAxis:i=0
+orthographic:b=no
+orthographicSize:r=100
+viewport:p4=0, 0, 1, 1
+backgroundColor:p4=0.25, 0.25, 0.25, 1
+_renderTargetId:i64=0
+layerIdx:i=0
+renderSettings:i=0
+}
+}
