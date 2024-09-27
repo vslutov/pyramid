@@ -2,7 +2,6 @@ require engine.core
 require prefabs.Player
 require prefabs.Pyramid
 require prefabs.Desert
-require engine.runtime.das_profiler
 
 let FLOOR = request_prefab("assets/Floor.prefab")
 
