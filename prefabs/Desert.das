@@ -1,5 +1,4 @@
 require engine.core
-require engine.free_camera
 
 var private oldCenter = int2(0, 0)
 var private desert: NodeId

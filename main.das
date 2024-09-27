@@ -18,7 +18,7 @@ let RENDER_SETTINGS = request_prefab("assets/RenderSettings.prefab")
     init_desert()
     init_player(float3(70, 1, -24))
 
-    create_pyramid(float3(0, -3, 0), 15)
+    create_pyramid(float3(0, -3, 0), 20)
 
 [export]
 def on_update()
