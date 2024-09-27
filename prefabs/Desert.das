@@ -5,14 +5,18 @@ var private oldCenter = int2(0, 0)
 var private desert: NodeId
 var private meshId: MeshId
 var private collisionId: CollisionId
+var moveSand = false
 
 let private SIZE = 100.0
 let private FREQ = 24
 let private PLANE_FREQ = 2*FREQ + 1
 let private COLLISION_FREQ = FREQ + 1
+var private sandStart = 0.0
 
 def private current_phase()
-    return 0.05 * get_time()
+    if !moveSand
+        sandStart = get_time()
+    return 0.05 * (get_time() - sandStart)
 
 def private create_plane_mesh(n : int; size: float) : MeshData
 

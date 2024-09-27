@@ -2,6 +2,7 @@ require engine.core
 require prefabs.Player
 require prefabs.Pyramid
 require prefabs.Desert
+require prefabs.Script
 require engine.runtime.das_profiler
 
 let RENDER_SETTINGS = request_prefab("assets/RenderSettings.prefab")
@@ -18,9 +19,11 @@ let RENDER_SETTINGS = request_prefab("assets/RenderSettings.prefab")
     sun |> add_component([[DirectionLight()]])
 
     init_desert()
-    init_player(float3(70, 1, -24))
+    init_player(float3(70, -0.2, -24))
 
     init_pyramids()
+
+    start_coroutine() <| start_script()
 
 [export]
 def on_update()

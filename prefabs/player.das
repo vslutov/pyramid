@@ -1,13 +1,17 @@
 require engine.core
 require prefabs.Desert
 
-let PLAYER = request_prefab("prefabs/Player.prefab")
-let ROT_SPEED = 0.005
-let WALK_SPEED = 5.0
-let RUN_SPEED = WALK_SPEED * 2.0
-let JUMP_SPEED = 4.0
-let JUMP_DELAY = 0.5
-let LEG_SIZE = 0.7
+let private PLAYER = request_prefab("prefabs/Player.prefab")
+let private ROT_SPEED = 0.005
+let private WALK_SPEED = 5.0
+let private RUN_SPEED = WALK_SPEED * 2.0
+let private JUMP_SPEED = 4.0
+let private JUMP_DELAY = 0.5
+let private LEG_SIZE = 0.7
+
+var allowW = false
+var allowMove = false
+var allowRun = false
 
 struct PlayerInput
     forward: bool = false
@@ -48,18 +52,21 @@ class Player : Component
         for cmd in get_input_command_buffer()
             match cmd
                 if [[RawKeyboardInputEvent kind=RawKeyboardInputEventKind KeyDown, buttonIdx=$v(buttonIdx)]]
-                    if buttonIdx == VK_UP || buttonIdx == VK_W
-                        playerInput.forward = true
-                    if buttonIdx == VK_DOWN || buttonIdx == VK_S
-                        playerInput.backward = true
-                    if buttonIdx == VK_LEFT || buttonIdx == VK_A
-                        playerInput.left = true
-                    if buttonIdx == VK_RIGHT || buttonIdx == VK_D
-                        playerInput.right = true
-                    if buttonIdx == VK_RSHIFT || buttonIdx == VK_LSHIFT
-                        playerInput.run = true
-                    if buttonIdx == VK_SPACE
-                        playerInput.jump = true
+                    if allowW
+                        if buttonIdx == VK_UP || buttonIdx == VK_W
+                            playerInput.forward = true
+                    if allowMove
+                        if buttonIdx == VK_DOWN || buttonIdx == VK_S
+                            playerInput.backward = true
+                        if buttonIdx == VK_LEFT || buttonIdx == VK_A
+                            playerInput.left = true
+                        if buttonIdx == VK_RIGHT || buttonIdx == VK_D
+                            playerInput.right = true
+                        if buttonIdx == VK_SPACE
+                            playerInput.jump = true
+                    if allowRun
+                        if buttonIdx == VK_RSHIFT || buttonIdx == VK_LSHIFT
+                            playerInput.run = true
 
                 if [[RawKeyboardInputEvent kind=RawKeyboardInputEventKind KeyUp, buttonIdx=$v(buttonIdx)]]
                     if buttonIdx == VK_UP || buttonIdx == VK_W
@@ -76,13 +83,14 @@ class Player : Component
                         playerInput.jump = false
 
                 if [[RawMouseInputEvent deltaPosition=$v(deltaPosition)]]
-                    playerInput.rotX += ROT_SPEED * deltaPosition.x
-                    if playerInput.rotX < -3.0 * PI
-                        playerInput.rotX += 2.0 * PI
-                    if playerInput.rotX > 3.0 * PI
-                        playerInput.rotX -= 2.0 * PI
-                    playerInput.rotY += ROT_SPEED * deltaPosition.y
-                    playerInput.rotY = clamp(playerInput.rotY, -PI * 0.5, PI * 0.5)
+                    if allowMove
+                        playerInput.rotX += ROT_SPEED * deltaPosition.x
+                        if playerInput.rotX < -3.0 * PI
+                            playerInput.rotX += 2.0 * PI
+                        if playerInput.rotX > 3.0 * PI
+                            playerInput.rotX -= 2.0 * PI
+                        playerInput.rotY += ROT_SPEED * deltaPosition.y
+                        playerInput.rotY = clamp(playerInput.rotY, -PI * 0.5, PI * 0.5)
 
     def rotate()
         nodeId.localRotation = quat4(playerInput.rotX, 0, 0)
@@ -134,4 +142,5 @@ class Player : Component
 def init_player(coord: float3)
     let player = instantiate_prefab(PLAYER)
     player.localPosition = coord
+    player.localRotation = quat4(-PI * 0.5, 0, 0)
     player |> add_component() <| [[Player()]]
