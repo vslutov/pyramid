@@ -16,7 +16,7 @@ let RENDER_SETTINGS = request_prefab("assets/RenderSettings.prefab")
     sun |> add_component([[DirectionLight()]])
 
     init_desert()
-    init_player(float3(70, -1, -24))
+    init_player(float3(70, 1, -24))
 
     create_pyramid(float3(0, -3, 0), 15)
 

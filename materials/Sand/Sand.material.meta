@@ -1,6 +1,6 @@
 guid:t="01923002-9217-7ab4-bf4d-33180b4646ac"
 assetType:i=2
-shader:t="standard_unlit_shader"
+shader:t="standard_diffuse_shader"
 textures{
 it0{
 guid:i64=4685025510582464330
@@ -13,6 +13,10 @@ it4{}
 it5{}
 }
 properties{
+specularColor{
+__variant_index:i=1
+f4:p4=0, 0, 0, 1
+}
 transparencyMode{
 __variant_index:i=2
 i:i=0
@@ -32,6 +36,10 @@ i:i=1
 renderOrder{
 __variant_index:i=2
 i:i=0
+}
+glossiness{
+__variant_index:i=0
+f:r=1
 }
 color{
 __variant_index:i=1

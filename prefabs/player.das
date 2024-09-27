@@ -3,10 +3,11 @@ require prefabs.Desert
 
 let PLAYER = request_prefab("prefabs/Player.prefab")
 let ROT_SPEED = 0.005
-let WALK_SPEED = 3.0
-let RUN_SPEED = WALK_SPEED * 5.0
-let JUMP_IMPULSE = 300.0
+let WALK_SPEED = 5.0
+let RUN_SPEED = WALK_SPEED * 2.0
+let JUMP_SPEED = 4.0
 let JUMP_DELAY = 0.5
+let LEG_SIZE = 0.7
 
 struct PlayerInput
     forward: bool = false
@@ -20,6 +21,8 @@ struct PlayerInput
     rotX: float = -PI / 2.0
 
 struct PlayerState
+    bodyHeight: float = 0.0
+    floorHeight: float = 0.0
     onGround: bool = false
     lastJump: float = -JUMP_DELAY
 
@@ -30,9 +33,16 @@ class Player : Component
 
     def override on_update() // will be called each frame
         self->input()
+        self->rotate()
+        self->checkState()
         self->move()
-        playerState.onGround = false
         update_desert(nodeId.localPosition)
+
+    def checkState()
+        playerState.onGround = false
+        [[RayCast() rayOrigin=nodeId.localPosition, rayDirection=float3(0, -1, 0), maxDistance=LEG_SIZE + playerState.bodyHeight, collisionMask=1U]] |> trace() <| $(hit: RaycastHit)
+            playerState.onGround = true
+            playerState.floorHeight = nodeId.localPosition.y - hit.distance
 
     def input()
         for cmd in get_input_command_buffer()
@@ -74,12 +84,26 @@ class Player : Component
                     playerInput.rotY += ROT_SPEED * deltaPosition.y
                     playerInput.rotY = clamp(playerInput.rotY, -PI * 0.5, PI * 0.5)
 
-    def move()
+    def rotate()
         nodeId.localRotation = quat4(playerInput.rotX, 0, 0)
         camera.localRotation = quat4(0, 0, playerInput.rotY)
 
-        if playerState.onGround
-            nodeId |> get_component() <| $(var body: RigidBody)
+    def move()
+        let currentTime = get_time()
+        let inJump = currentTime - playerState.lastJump <= JUMP_DELAY
+
+        nodeId |> get_component() <| $(var body: RigidBody)
+            body.useGravity = !playerState.onGround
+            if playerState.onGround
+                var vel_y = max(body.velocity.y, 0.0)
+
+                if playerInput.jump && !inJump
+                    vel_y = JUMP_SPEED
+                    playerState.lastJump = currentTime
+
+                let localY = max(nodeId.localPosition.y, playerState.floorHeight + playerState.bodyHeight)
+                nodeId.localPosition = float3(nodeId.localPosition.x, localY, nodeId.localPosition.z)
+
                 let speed = playerInput.run ? RUN_SPEED : WALK_SPEED
                 var speedDir = float3(0, 0, 0)
                 if playerInput.forward
@@ -92,25 +116,17 @@ class Player : Component
                 if playerInput.left && !playerInput.right
                     speedDir -= nodeId.localRight
 
-                body.velocity = float3(
-                    speed * speedDir.x,
-                    body.velocity.y,
-                    speed * speedDir.z)
+                speedDir = speed * normalize(speedDir)
 
-                let currentTime = get_time()
-                if playerInput.jump && currentTime - playerState.lastJump >= JUMP_DELAY
-                    nodeId |> apply_rigid_body_impulse <| float3(0, JUMP_IMPULSE, 0)
-                    playerState.lastJump = currentTime
+                body.velocity = float3(
+                    speedDir.x,
+                    vel_y,
+                    speedDir.z)
 
     def override on_initialize() : void // will be called when the component appears on the scene (attached)
         camera = nodeId |> get_child(0)
-        nodeId |> on_collision_persisted() <| @(contact)
-            let localPos = inverse(nodeId.localTransform) * contact.position
-            var height = localPos.y
-            nodeId |> get_component() <| $(collider: CapsuleCollider)
-                height = (height + 0.5 * collider.height) / collider.radius
-            if height <= 0.3
-                playerState.onGround = true
+        nodeId |> get_component() <| $(col: CapsuleCollider)
+            playerState.bodyHeight = col.height * 0.5 + LEG_SIZE
 
     def override on_destroy() : void // will be called when the component is destroyed.
         pass

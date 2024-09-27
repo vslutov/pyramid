@@ -3,28 +3,28 @@ assetType:i=2
 shader:t="standard_diffuse_shader"
 textures{
 it0{
-guid:i64=-9047102594593574309
+guid:i64=-5069057284865802450
 type:i=2
 }
 it1{
-guid:i64=7962587931609680415
+guid:i64=958940594235874609
 type:i=2
 }
 it2{
-guid:i64=-7502736348588734540
+guid:i64=3994168255982912377
 type:i=2
 }
 it3{
-guid:i64=3450334915282141776
+guid:i64=3845539743229264985
 type:i=2
 }
 it4{}
 it5{}
 }
 properties{
-uvRect{
-__variant_index:i=1
-f4:p4=0, 0, 1, 1
+renderOrder{
+__variant_index:i=2
+i:i=0
 }
 transparencyMode{
 __variant_index:i=2
@@ -46,8 +46,8 @@ receiveShadows{
 __variant_index:i=2
 i:i=1
 }
-renderOrder{
-__variant_index:i=2
-i:i=0
+uvRect{
+__variant_index:i=1
+f4:p4=0, 0, 1, 1
 }
 }
