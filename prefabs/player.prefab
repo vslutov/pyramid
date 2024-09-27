@@ -27,16 +27,6 @@ radius:r=0.2
 height:r=1
 direction:i=1
 }
-AudioListener{
-thisHash{
-t:i64=9051717797303640829
-v:i64=5132161183247298841
-}
-nodeId{
-t:i64=7851020547654073568
-v:i=1
-}
-}
 }
 node{
 id:i=2

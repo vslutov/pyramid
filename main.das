@@ -8,6 +8,8 @@ let RENDER_SETTINGS = request_prefab("assets/RenderSettings.prefab")
 
 [export] def on_initialize()
     set_mouse_cursor_locked(true)
+    let sid = request_sound("sounds/ambient_wind.ogg") |> play_sound_loop()
+    sid |> set_volume(0.2)
 
     let rs = create_render_settings()
     rs |> get_component() <| $(var sky: Sky)

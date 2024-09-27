@@ -42,9 +42,7 @@ def private add_gate(var vertices : array<Vertex>; var triangles : array<uint3>;
 
 def private create_pyro_mesh(size: int; parent: NodeId)
     var vertices : array<Vertex>
-    vertices |> reserve(4 * 8)
     var triangles : array<uint3>
-    vertices |> reserve(8)
 
 
     let a = float3(-float(size) * .5, 0, float(size) * .5)
@@ -67,6 +65,8 @@ def private create_pyro_mesh(size: int; parent: NodeId)
 
 def create_pyramid(center: float3; size: int)
     let pyramid = create_node([[NodeData() position=center, name="Pyramid"]])
+    let sound = create_node([[NodeData() position=float3(0, float(size) * 0.5, 0), name="PyramidSound", parent=pyramid]])
+    sound |> add_component([[AudioSource() source=request_sound("sounds/pyramid_wind.ogg"), isLoop=true, is3d=true, autoPlay=true]])
     create_pyro_mesh(size, pyramid)
     let wall = float(size) * (1.0 - SPLIT) - 1.0
 
