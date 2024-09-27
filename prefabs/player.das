@@ -17,7 +17,7 @@ struct PlayerInput
     jump: bool = false
 
     rotY: float = 0.0
-    rotX: float = 0.0
+    rotX: float = -PI / 2.0
 
 struct PlayerState
     onGround: bool = false
@@ -67,6 +67,10 @@ class Player : Component
 
                 if [[RawMouseInputEvent deltaPosition=$v(deltaPosition)]]
                     playerInput.rotX += ROT_SPEED * deltaPosition.x
+                    if playerInput.rotX < -3.0 * PI
+                        playerInput.rotX += 2.0 * PI
+                    if playerInput.rotX > 3.0 * PI
+                        playerInput.rotX -= 2.0 * PI
                     playerInput.rotY += ROT_SPEED * deltaPosition.y
                     playerInput.rotY = clamp(playerInput.rotY, -PI * 0.5, PI * 0.5)
 

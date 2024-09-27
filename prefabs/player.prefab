@@ -36,7 +36,7 @@ parent:i=1
 pos:p3=0, 0.7, 0
 Camera{
 znear:r=0.01
-zfar:r=250
+zfar:r=100
 fov:r=1.53938
 fovAxis:i=0
 orthographic:b=no

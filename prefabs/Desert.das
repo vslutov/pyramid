@@ -1,15 +1,18 @@
 require engine.core
 require engine.free_camera
 
+var private oldCenter = int2(0, 0)
+var private desert: NodeId
+var private meshId: MeshId
+var private collisionId: CollisionId
+
 let private SIZE = 100.0
-var oldCenter = int2(0, 0)
-let rad = 1
-let FREQ = 24
-let private planeFrequency = 3*FREQ + 1
-let private collisionFrequency = FREQ + 1
+let private FREQ = 24
+let private PLANE_FREQ = 2*FREQ + 1
+let private COLLISION_FREQ = FREQ + 1
 
 def private current_phase()
-    return 0.2 * get_time()
+    return 0.05 * get_time()
 
 def private create_plane_mesh(n : int; size: float) : MeshData
 
@@ -32,14 +35,20 @@ def private create_plane_mesh(n : int; size: float) : MeshData
             let b = i * n + j + 1
             let c = (i + 1) * n + j
             let d = (i + 1) * n + j + 1
-            triangles |> push(uint3(a, b, d))
-            triangles |> push(uint3(a, d, c))
+            if (i + j) % 2 == 0
+                triangles |> push(uint3(a, b, d))
+                triangles |> push(uint3(a, d, c))
+            else
+                triangles |> push(uint3(a, b, c))
+                triangles |> push(uint3(b, d, c))
 
     return <- MeshData(vertices<-vertices, triangles<-triangles)
 
 
-let private originalMesh <- create_plane_mesh(planeFrequency, 3.0 * SIZE)
-let private originalCollision <- create_plane_mesh(collisionFrequency, 3.0 * SIZE)
+let private originalMesh <- create_plane_mesh(PLANE_FREQ, 3.0 * SIZE)
+var private animatedMesh := originalMesh
+let private originalCollision <- create_plane_mesh(COLLISION_FREQ, 3.0 * SIZE)
+var private animatedCollision := originalCollision
 
 def private GerstnerWave(wave : float4; p : float3; var tangent, binormal : float3&; phase : float) : float3
 
@@ -90,39 +99,28 @@ def private animate_mesh(mesh_src : MeshData; var mesh_dst : MeshData; phase : f
         vertex_dst = vertex_src
         animate_vertex(vertex_dst, wave_a, wave_b, wave_c, phase, shift)
 
-class Desert : Component
-    animatedMesh: MeshData
-    animatedCollision: MeshData
-
-    def override on_update()
-        let shift = SIZE * float3(oldCenter.x, 0, oldCenter.y)
-        nodeId.localPosition = shift
-        nodeId |> get_component() <| $(var m : Mesh)
-            animate_mesh(originalMesh, animatedMesh, current_phase(), shift)
-            update_mesh(m.meshId, animatedMesh)
-        nodeId |> get_component() <| $(var m : MeshCollider)
-            animate_mesh(originalCollision, animatedCollision, current_phase(), shift)
-            update_mesh_collision(m.collisionId, animatedCollision)
 
 def init_desert()
-    let shift = float3(0)
-    var animatedMesh := originalMesh
-    animate_mesh(originalMesh, animatedMesh, current_phase(), shift)
-    let meshId = create_mesh(animatedMesh)
+    meshId = create_mesh(animatedMesh)
+    collisionId = create_mesh_collision(animatedCollision)
+    let shift = update_desert_mesh()
 
-    var animatedCollision := originalCollision
-    animate_mesh(originalCollision, animatedCollision, current_phase(), shift)
-    let collisionId = create_mesh_collision(animatedCollision)
-
-    let plane = create_node([[NodeData() name="Desert"]])
-    plane.localPosition = shift
-    plane |> add_component() <| [[Mesh()
+    desert = create_node([[NodeData() name="Desert"]])
+    desert.localPosition = shift
+    desert |> add_component() <| [[Mesh()
         meshId=meshId,
         materialId=request_material("materials/Sand/Sand.material"),
     ]]
-    plane |> add_component() <| [[MeshCollider() collisionId=collisionId]]
-    plane |> add_component() <| [[RigidBody() motionType=MotionType Static]]
-    plane |> add_component() <| [[Desert() animatedMesh<-animatedMesh, animatedCollision<-animatedCollision]]
+    desert |> add_component() <| [[MeshCollider() collisionId=collisionId]]
+    desert |> add_component() <| [[RigidBody() motionType=MotionType Static]]
+
+def private update_desert_mesh()
+    let shift = SIZE * float3(oldCenter.x, 0, oldCenter.y)
+    animate_mesh(originalMesh, animatedMesh, current_phase(), shift)
+    animate_mesh(originalCollision, animatedCollision, current_phase(), shift)
+    update_mesh(meshId, animatedMesh)
+    update_mesh_collision(collisionId, animatedCollision)
+    return shift
 
 def private close(a, b: int2; dist: int)
     let d = abs(a - b)
@@ -133,3 +131,5 @@ def update_desert(origin: float3)
     ori += 0.1 * (float2(oldCenter) - ori)
     let newCenter = int2(roundi(ori.x), roundi(ori.y))
     oldCenter = newCenter
+    desert.localPosition = update_desert_mesh()
+

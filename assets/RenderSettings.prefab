@@ -1,0 +1,80 @@
+node{
+id:i=1
+name:t="RenderSettings"
+guid:i64=-3200096768748771314
+DirectionLight{
+color:p3=1, 0.96, 0.92
+intensity:r=1
+castShadows:b=yes
+}
+ShadowSettings{
+active:b=yes
+shadowStrength:r=1
+cascadeDepthHighPrecision:b=no
+numCascades:i=4
+cascadeWidth:i=1024
+powWeight:r=0.94
+maxDist:r=250
+shadowStart:r=0
+}
+Sky{
+active:b=yes
+_materialId:i64=-5836457328299246843
+}
+AmbientSettings{
+ambientColor:p3=0.4, 0.4, 0.4
+ambientStrength:r=1
+ambientSource:i=0
+}
+SSAOSettings{
+active:b=yes
+radiusFactor:r=64
+strength:r=1
+blurWeights:p4=0.9, 0.75, 0.5, 0.25
+blurQuality:i=1
+}
+Tonemap{
+active:b=yes
+tonemapContrast:r=1.28
+tonemapShoulder:r=0.85
+tonemapMidIn:r=0.18
+tonemapMidOut:r=0.18
+tonemapHdrMax:r=4
+colorSaturation:p4=1, 1, 1, 1
+colorContrast:p4=1, 1, 1, 1
+colorGamma:p4=1, 1, 1, 1
+colorGain:p4=1, 1, 1, 1
+colorOffset:p4=0, 0, 0, 0
+colorCorrectionShadowsMax:r=0.1
+colorCorrectionHighlightsMin:r=0.8
+shadows_colorSaturation:p4=1, 1, 1, 1
+shadows_colorContrast:p4=1, 1, 1, 1
+shadows_colorGamma:p4=1, 1, 1, 1
+shadows_colorGain:p4=1, 1, 1, 1
+shadows_colorOffset:p4=0, 0, 0, 0
+midtones_colorSaturation:p4=1, 1, 1, 1
+midtones_colorContrast:p4=1, 1, 1, 1
+midtones_colorGamma:p4=1, 1, 1, 1
+midtones_colorGain:p4=1, 1, 1, 1
+midtones_colorOffset:p4=0, 0, 0, 0
+highlights_colorSaturation:p4=1, 1, 1, 1
+highlights_colorContrast:p4=1, 1, 1, 1
+highlights_colorGamma:p4=1, 1, 1, 1
+highlights_colorGain:p4=1, 1, 1, 1
+highlights_colorOffset:p4=0, 0, 0, 0
+whiteTemp:r=6400
+whiteTint:r=0
+}
+AntiAliasing{
+active:b=yes
+mode:i=0
+msaa_quality:i=1
+fxaa_quality:i=1
+}
+RenderPipeline{hdrMode:i=1;}
+}
+res{
+guid:i64=-540597343814624035
+type:i=3
+refId:i64=-5836457328299246843
+}

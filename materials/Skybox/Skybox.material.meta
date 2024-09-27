@@ -1,0 +1,44 @@
+guid:t="019232b8-e945-7c3d-bd0c-5e8e003b3e54"
+assetType:i=2
+shader:t="sky_box"
+textures{
+it0{
+guid:i64=4125412136753548026
+type:i=2
+}
+it1{}
+it2{}
+it3{}
+it4{}
+it5{}
+}
+properties{
+uvRect{
+__variant_index:i=1
+f4:p4=0, 0, 1, 1
+}
+transparencyMode{
+__variant_index:i=2
+i:i=0
+}
+emission{
+__variant_index:i=1
+f4:p4=0, 0, 0, 1
+}
+color{
+__variant_index:i=1
+f4:p4=1, 1, 1, 1
+}
+atest{
+__variant_index:i=0
+f:r=0
+}
+receiveShadows{
+__variant_index:i=2
+i:i=1
+}
+renderOrder{
+__variant_index:i=2
+i:i=0
+}
+}
