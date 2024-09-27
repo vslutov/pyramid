@@ -1,9 +1,10 @@
 require engine.core
+require prefabs.Desert
 
-let PLAYER_PF = request_prefab("prefabs/player.prefab")
+let PLAYER = request_prefab("prefabs/Player.prefab")
 let ROT_SPEED = 0.005
-let WALK_SPEED = 1.5
-let RUN_SPEED = WALK_SPEED * 3.0
+let WALK_SPEED = 3.0
+let RUN_SPEED = WALK_SPEED * 5.0
 let JUMP_IMPULSE = 300.0
 let JUMP_DELAY = 0.5
 
@@ -31,6 +32,7 @@ class Player : Component
         self->input()
         self->move()
         playerState.onGround = false
+        update_desert(nodeId.localPosition)
 
     def input()
         for cmd in get_input_command_buffer()
@@ -110,6 +112,6 @@ class Player : Component
         pass
 
 def init_player(coord: float3)
-    let player = instantiate_prefab(PLAYER_PF)
+    let player = instantiate_prefab(PLAYER)
     player.localPosition = coord
     player |> add_component() <| [[Player()]]

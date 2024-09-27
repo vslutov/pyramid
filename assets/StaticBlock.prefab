@@ -1,11 +1,10 @@
 node{
 id:i=1
-name:t="root"
-guid:i64=-7320939188891921459
-scl:p3=100, 0.001, 100
+name:t="StaticBlock"
+guid:i64=-8137179522819622181
 Mesh{
 _meshId:i64=-8866122688351080597
-_materialId:i64=0
+_materialId:i64=-3153141124554444694
 visibility:i=2047
 }
 RigidBody{
@@ -37,4 +36,9 @@ type:i=1
 assetType:i=1
 refId:i64=-8866122688351080597
 importSettings{importSettings:t="%engine/gen_geometry/cube_mesh.das";}
+}
+res{
+guid:i64=-3798372076006916043
+type:i=3
+refId:i64=-3153141124554444694
 }
