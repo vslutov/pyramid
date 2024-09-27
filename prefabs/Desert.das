@@ -1,4 +1,5 @@
 require engine.core
+require prefabs.Pyramid
 
 var private oldCenter = int2(0, 0)
 var private desert: NodeId
@@ -80,6 +81,11 @@ def private GerstnerWave(wave : float4; p : float3; var tangent, binormal : floa
 
 def private animate_vertex(var vertex : Vertex; wave_a, wave_b, wave_c : float4; phase : float; shift: float3) : void
     let gridPoint = vertex.position + shift
+    let groundLevel = get_ground_level(gridPoint.xz)
+    if groundLevel > -999.0
+        vertex.position = float3(gridPoint.x, groundLevel, gridPoint.z) - shift
+        vertex.normal = float3(0, 1, 0)
+        return
     var tangent = float3(1, 0, 0)
     var binormal = float3(0, 0, 1)
     var p = gridPoint

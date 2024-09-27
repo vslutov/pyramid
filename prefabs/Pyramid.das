@@ -1,9 +1,25 @@
 require engine.core
 
-let STATIC_BLOCK = request_prefab("assets/StaticBlock.prefab")
-let RANDOM_ROTATION = 0.1
-let RANDOM_SHIFT = 0.1
-let SPLIT = 0.9
+let private STATIC_BLOCK = request_prefab("assets/StaticBlock.prefab")
+let private RANDOM_ROTATION = 0.1
+let private RANDOM_SHIFT = 0.1
+let private SPLIT = 0.9
+let private SIZE = 30
+
+struct PyroDesc
+    center: float3
+    groundLevel: float
+
+let pyramids = [[PyroDesc[]
+    center=float3(0, -19, 0), groundLevel=-2.0]]
+
+def get_ground_level(xz: float2)
+    for p in pyramids
+        let size = float(SIZE) + p.center.y - p.groundLevel
+        let d2 = abs(p.center.xz - xz)
+        if max(d2.x, d2.y) <= float(size) * 0.5
+            return p.groundLevel
+    return -1000.0
 
 def private random_float3(s: float)
     return float3(random_range(-s, s), random_range(-s, s), random_range(-s, s))
@@ -63,7 +79,8 @@ def private create_pyro_mesh(size: int; parent: NodeId)
     return pyro
 
 
-def create_pyramid(center: float3; size: int)
+def private create_pyramid(center: float3)
+    let size = SIZE
     let pyramid = create_node([[NodeData() position=center, name="Pyramid"]])
     let sound = create_node([[NodeData() position=float3(0, float(size) * 0.5, 0), name="PyramidSound", parent=pyramid]])
     sound |> add_component([[AudioSource() source=request_sound("sounds/pyramid_wind.ogg"), isLoop=true, is3d=true, autoPlay=true]])
@@ -87,5 +104,7 @@ def create_pyramid(center: float3; size: int)
                 create_cube(pyramid, float3(-0.5, diff.y, diff.x))
 
 
-
+def init_pyramids()
+    for p in pyramids
+        create_pyramid(p.center)
 
