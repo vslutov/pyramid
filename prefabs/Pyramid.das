@@ -10,8 +10,11 @@ struct PyroDesc
     center: float3
     groundLevel: float
 
-let pyramids = [[PyroDesc[]
-    center=float3(0, -19, 0), groundLevel=-2.0]]
+let pyramids = [[PyroDesc[3]
+    center=float3(0, -19, 0), groundLevel=-2.0;
+    center=float3(0, -10, 100), groundLevel=-1.0;
+    center=float3(-60, 1, 190), groundLevel=2.0
+]]
 
 def get_ground_level(xz: float2)
     for p in pyramids
@@ -103,8 +106,9 @@ def private create_pyramid(center: float3)
                 create_cube(pyramid, float3(0.5, diff.y, diff.x))
                 create_cube(pyramid, float3(-0.5, diff.y, diff.x))
 
+def spawn_pyramid(i: int)
+    create_pyramid(pyramids[i].center)
 
 def init_pyramids()
-    for p in pyramids
-        create_pyramid(p.center)
+    spawn_pyramid(0)
 

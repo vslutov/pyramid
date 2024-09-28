@@ -12,6 +12,7 @@ let private LEG_SIZE = 0.7
 var allowW = false
 var allowMove = false
 var allowRun = false
+var allowJump = false
 
 struct PlayerInput
     forward: bool = false
@@ -62,11 +63,12 @@ class Player : Component
                             playerInput.left = true
                         if buttonIdx == VK_RIGHT || buttonIdx == VK_D
                             playerInput.right = true
-                        if buttonIdx == VK_SPACE
-                            playerInput.jump = true
                     if allowRun
                         if buttonIdx == VK_RSHIFT || buttonIdx == VK_LSHIFT
                             playerInput.run = true
+                    if allowJump
+                        if buttonIdx == VK_SPACE
+                            playerInput.jump = true
 
                 if [[RawKeyboardInputEvent kind=RawKeyboardInputEventKind KeyUp, buttonIdx=$v(buttonIdx)]]
                     if buttonIdx == VK_UP || buttonIdx == VK_W

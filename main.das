@@ -3,7 +3,6 @@ require prefabs.Player
 require prefabs.Pyramid
 require prefabs.Desert
 require prefabs.Script
-require engine.runtime.das_profiler
 
 let RENDER_SETTINGS = request_prefab("assets/RenderSettings.prefab")
 

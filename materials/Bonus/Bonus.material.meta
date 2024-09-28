@@ -1,0 +1,44 @@
+guid:t="019235bd-c82d-7c0f-84c2-8dd0a7310003"
+assetType:i=2
+shader:t="standard_unlit_shader"
+textures{
+it0{
+guid:i64=8515678748203803273
+type:i=2
+}
+it1{}
+it2{}
+it3{}
+it4{}
+it5{}
+}
+properties{
+uvRect{
+__variant_index:i=1
+f4:p4=0, 0, 1, 1
+}
+transparencyMode{
+__variant_index:i=2
+i:i=1
+}
+emission{
+__variant_index:i=1
+f4:p4=0, 0, 0, 1
+}
+color{
+__variant_index:i=1
+f4:p4=1, 1, 1, 0.337255
+}
+atest{
+__variant_index:i=0
+f:r=0
+}
+receiveShadows{
+__variant_index:i=2
+i:i=1
+}
+renderOrder{
+__variant_index:i=2
+i:i=0
+}
+}
