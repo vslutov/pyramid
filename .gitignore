@@ -1,2 +1,3 @@
 **/*.elin
 .project/cache
+/debug.log

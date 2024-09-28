@@ -1,10 +1,9 @@
 title:t="Pyramid"
 description:t="""
-You are explorer of acient pyramids
+You are explorer of acient pyramids - can you find the gold?
 
 WASD to move
 Mouse to look
-Left mouse button to shoot
 """
 project_guid:t="01922e54-61d4-7e1c-9583-f04937fba9d6"
 type:i=3

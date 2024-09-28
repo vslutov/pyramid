@@ -1,12 +1,8 @@
 # Pyramid
 
-You are explorer of pyramids
-
-## Control
+You are explorer of acient pyramids - can you find the gold?
 
 ```
-mouse to look
-lift mouse button to shoot
 WASD to move
-shift to run
+Mouse to look
 ```
